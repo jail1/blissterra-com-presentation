@@ -1,0 +1,27 @@
+<IfModule mod_rewrite.c>
+Options -MultiViews
+RewriteEngine On
+
+# redirect everything to url without trailing slash
+
+RewriteCond %{HTTPS} =on
+RewriteRule ^(.+)$ - [env=ps:https]
+RewriteCond %{HTTPS} !=on
+RewriteRule ^(.+)$ - [env=ps:http]
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+
+RewriteCond %{REQUEST_METHOD} ^GET
+
+RewriteRule ^(.+)/$ %{ENV:ps}://%{SERVER_NAME}/$1 [R=301,L]
+
+# pretty urls
+
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+RewriteRule ^ index.php [L]
+</IfModule>
